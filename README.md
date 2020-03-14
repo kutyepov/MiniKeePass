@@ -1,74 +1,57 @@
-MiniKeePass
-===========
+# Can't get access to your `pswd.kdbx` file because MiniKeePass was removed from Apple's App Store?
 
-MiniKeePass provides secure password storage on your phone that's compatible with KeePass.
+## Table of Contents
+1. [Problem](#problem)
+2. [Prerequisites](#prerequisites)
+3. [How to recover passwords from backup](#how-to-recover-passwords-from-backup)
 
-- View, Edit, and Create KeePass 1.x and 2.x files
-- Search for entries from the top of tables like in Mail
-- Key File Support
-- Import/Export files to Dropbox using the Dropbox iPhone app
-- Copy password entries to the clipboard for easy entry
-- Open websites in Safari while MiniKeePass runs in the background
-- Prevent unauthorized access to MiniKeePass with a PIN
-- Remember database passwords in the device's secure keychain
-- Optionally clear the clipboard after set time on devices that support background tasks
-- Generate new passwords
+## Problem
 
-FAQ
----
+It is impossible to access on MiniKeePass database after a device with iOS / iPadOS was restored from a backup.
+Many of us see this message on their Apple device and start to panic.
+![minikeepass-was-removed-from-app-store-ss](./message-that-makes-everyone-panic.jpg)
 
-### Copying KeePass files using Dropbox ###
+I have seen many posts across the web where a lot of people faced the same problem. 
+All posts I have seen, suggest using paid software to extract a backup to find a file. 
+The price of such software starts at $40. 
+I tried using a few pieces of the recommended software to read from backups to recover my password database,
+but none were able to help me recover my precious password database. 
+Thus, I came up with a solution of my own. 
+Most importantly, this solution will guide you through recovering you password database without spending a penny.
 
-You can copy KeePass files from Dropbox to your device using the [Dropbox iOS App](https://www.dropbox.com/help/80/en).  This method will also work with any other app that let you open files in other apps (Google Drive, Box.net, Mail, Safari, etc).
+## Prerequisites
 
-You can use a similar procedure in MiniKeePass to copy your KeePass file from MiniKeePass to another app.  Open the KeePass file in MiniKeePass, and select the action button on the bottom toolbar, and you will be presented with a list of apps that can open the KeePass file.
+1. PC or Mac with [iTunes](https://support.apple.com/downloads/itunes) installed
+2. Backup* of your iPhone / iPad / iPod
+    
+    2.1 Follow this [manual](https://support.apple.com/en-us/HT203977#computer) to create a backup* on your computer.
+    
+    \* if for whatever reason you can't backup your device to PC or Mac, this manual is not for you, sorry.
+3. SQLite database viewer such as [sqlitebrowser](https://sqlitebrowser.org/).
 
-### Copying KeePass files using iTunes ###
+## How to recover passwords from backup
 
-You can copy your KeePass files to/from your device using [File Sharing](http://support.apple.com/kb/ht4094) in iTunes.
+1. Once you have created a backup,  you need to locate backup and `Manifest.db` file inside of thereof. Follow this 
+[manual](https://support.apple.com/en-us/HT204215#findiTunes) from Apple for instruction on how to locate a backup.
+In my case backup was located at: 
 
-### KeePass File Not Restored During Backup ###
+    `C:\Users\{user-name}\Apple\MobileSync\Backup\86d8949c27021984b309f6d364bc34fcc90fc49f`
+    
+    ![screenshot of manifest db location](./manifest-db-location.png)
+    
+2. Open `Manifest.db` in SQLiteBrowser or any other SQLite DB viewer of your choice.
 
-iOS should backup and restore the files MiniKeePass uses automatically, (MiniKeePass doesn't have to do anything special to support backups).  There have been occasional reports of KeePass files not being restored when restoring from a backup.
+    2.1 Type `MiniKeePass` as a filter for domain column as shown on the screenshot below.
+    2.2 Type `kdbx` as a filter for relativePath column as shown on the screenshot below.
+    
+    ![screenshot of filtered db](./filtering-manifest-db.png)
+    
+3. Copy UUID from fileID column and search for it in your backup folder. 
+(In my case it was: `5f09f49c854b7e3787570e40903b4462aec4650f`)
+![screenshot of uuid of pswd.kdbx file](./uuid-pswd-file.png)
 
-If you backup to iTunes, you can usually retrieve your KeePass files stored in the backup file using a tool that can open iOS backup files (iExplorer, iBackup Extractor, etc).  The file should be located in the MiniKeePass Documents folder.  Once you find the file, you can use one of the available methods for copying your KeePass files to get it back into MiniKeePass.
-
-License
--------
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
-Credits
--------
-MiniKeePass
-Copyright 2011 Jason Rush and John Flanagan. All rights reserved.
-
-German Translation - Florian Holzapfel<br />
-Japanese Translation - Katherine Lake<br />
-Russian Translation - Foster "Forst" Snowhill<br />
-Italian Translation - Emanuele Di Vita and Gabriele Cirulli<br />
-Simplified Chinese Translation - Caspar Zhang and David Wong<br />
-French Translation - Patrice Lachance<br />
-Brazilian Portuguese Translation - BR Lingo<br />
-Turkish Translation - Durul Dalkanat<br />
-
-MiniKeePass Icon - Gabriele Cirulli
-
-Nuvola Icons
-Copyright (c) 2003-2004  David Vignoni. All rights reserved.
-Released under GNU Lesser General Public License (LGPL)
-http://www.gnu.org/licenses/lgpl-2.1.html
-
-KeePass Database Library
-Copyright 2010 Qiang Yu. All rights reserved.
+4. Yay! Congratulations, you've now successfully recovered your `pswd.kdbx` file (trust me, this is the one, 
+even though the name is different). Now, download [KeePass](https://keepass.info/download.html) 
+client for your computer and open that file you've just found. Voila! You've successfully recovered all your passwords.
+    
+    
